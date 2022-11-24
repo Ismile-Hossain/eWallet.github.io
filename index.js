@@ -15,23 +15,38 @@ if(description && amount){
 
 });
 
+/*Get formated date time strt*/
+function getFormatedDateTime(){
+    const now = new Date().toLocaleDateString('en-us',{
+    day: 'numeric',
+    month : 'short', 
+    hour: '2-digit',
+    minute : '2-digit'
+    });
+    const dayMonth = now.split(',')[0].split(' ');
+    const hourMinute = now.split(',')[1];
+    const formatedTime = `${dayMonth[1]} ${dayMonth[0]},${hourMinute}`;
+    return formatedTime;
+}
+/*Get formated date time end*/
 
+
+    
 function newElementMake(type,description,value){
+const time = getFormatedDateTime();
 const newItemHtml = `<div class="item">
 <div class="item-description-time">
     <div class="item-description">
     <p>${description}</p>
     </div>
     <div class="item-time">
-    <p>25 Feb, 06:45 PM</p>
+    <p>${time}</p>
     </div>
 </div>
 <div class="item-amount ${type === '+' ? "income-amount":"expense-amount"}">
     <p>${type}$${value}</p>
 </div>
 </div>`;
-
-console.log(newItemHtml);
 document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
 }
 
