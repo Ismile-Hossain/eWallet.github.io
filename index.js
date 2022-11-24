@@ -72,6 +72,33 @@ function showItemsFromLs(){
 }
 /*show items from browser local storage end*/
 
+/*total income count strt*/
+showTotalIncome();
+function showTotalIncome(){
+    let items = getItemsFromLS();
+    let totalIncome = 0;
+    for(let item of items){
+        if(item.type === "+")
+        totalIncome += parseInt(item.value);
+    }
+    document.querySelector('.income__amount p').innerText = `$${totalIncome}` ;
+    console.log(document.querySelector('.expense__amount p').children);
+}
+/*total income count end*/
+/*total expense count strt*/
+showTotalExpenses();
+function showTotalExpenses(){
+    let items = getItemsFromLS();
+    let totalExpense = 0;
+    for(let item of items){
+        if(item.type === "-")
+        totalExpense += parseInt(item.value);
+    }
+    document.querySelector('.expense__amount p').innerText = `$${totalExpense}`;
+    console.log(totalExpense);
+}
+/*total expense count end*/
+
 function newElementMake(type,description,value){
 const time = getFormatedDateTime();
 const newItemHtml = `<div class="item">
@@ -89,6 +116,8 @@ const newItemHtml = `<div class="item">
 </div>`;
 document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
 addItemsToLS(time,type,description,value);
+showTotalIncome();
+showTotalExpenses();
 }
 
 /*reset the typed item of add bar in form strt*/
