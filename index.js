@@ -99,6 +99,26 @@ function showTotalExpenses(){
 }
 /*total expense count end*/
 
+/*total balance calculate and background strt*/
+totalBalance();
+function totalBalance(){
+    let allitems = getItemsFromLS();
+    let totalBal = 0;
+    for(let item of allitems){
+        if(item.type === "+")
+        totalBal += parseInt(item.value);
+        else
+        totalBal -= parseInt(item.value);
+    }
+    document.querySelector('.balance__amount p').innerText = `$${totalBal}`;
+    if(totalBal >= 0){
+        document.querySelector('header').className= "green";
+    }else{
+        document.querySelector('header').className= "red";
+    }
+}
+/*total balance calculate and background end*/
+
 function newElementMake(type,description,value){
 const time = getFormatedDateTime();
 const newItemHtml = `<div class="item">
@@ -118,6 +138,7 @@ document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtm
 addItemsToLS(time,type,description,value);
 showTotalIncome();
 showTotalExpenses();
+totalBalance();
 }
 
 /*reset the typed item of add bar in form strt*/
