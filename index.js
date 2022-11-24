@@ -49,6 +49,29 @@ function addItemsToLS(time,type,description,value){
 }
 /*add new data with existing or new to Browser Local Storage end*/
 
+/*show items from browser local storage start*/
+showItemsFromLs();
+function showItemsFromLs(){
+    let items = getItemsFromLS();
+    for(let item of items){
+        let newItemHtml = `<div class="item">
+        <div class="item-description-time">
+        <div class="item-description">
+        <p>${item.description}</p>
+        </div>
+        <div class="item-time">
+        <p>${item.time}</p>
+        </div>
+        </div>
+        <div class="item-amount ${item.type === '+' ? "income-amount":"expense-amount"}">
+        <p>${item.type}$${item.value}</p>
+        </div>
+        </div>`;
+        document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
+    }
+}
+/*show items from browser local storage end*/
+
 function newElementMake(type,description,value){
 const time = getFormatedDateTime();
 const newItemHtml = `<div class="item">
