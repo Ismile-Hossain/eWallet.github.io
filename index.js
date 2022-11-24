@@ -29,9 +29,7 @@ function getFormatedDateTime(){
     return formatedTime;
 }
 /*Get formated date time end*/
-
-
-    
+   
 function newElementMake(type,description,value){
 const time = getFormatedDateTime();
 const newItemHtml = `<div class="item">
@@ -50,9 +48,10 @@ const newItemHtml = `<div class="item">
 document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
 }
 
+/*reset the typed item of add bar in form strt*/
 function resetForm(){
 document.querySelector(".add__type").value = '+';
 document.querySelector(".add__description").value = '';
 document.querySelector(".add__value").value = '';
 }
-
+/*reset the typed item of add bar in form end*/
