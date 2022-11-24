@@ -14,7 +14,6 @@ if(description && amount){
 }
 
 });
-
 /*Get formated date time strt*/
 function getFormatedDateTime(){
     const now = new Date().toLocaleDateString('en-us',{
@@ -29,7 +28,27 @@ function getFormatedDateTime(){
     return formatedTime;
 }
 /*Get formated date time end*/
-   
+/*check and return any data is on Browser Local Storage strt*/
+function getItemsFromLS(){
+    let items = localStorage.getItem('item');
+    if(items){
+    items = JSON.parse(items);
+    }else{
+    items = [];
+    } 
+ return items;
+}
+/*check and return any data is on Browser Local Storage end*/
+
+/*add new data with existing or new to Browser Local Storage strt*/
+function addItemsToLS(time,type,description,value){
+    let items = getItemsFromLS();
+    items.push({time,type,description,value});
+    console.log(items);
+    localStorage.setItem('item',JSON.stringify(items));   
+}
+/*add new data with existing or new to Browser Local Storage end*/
+
 function newElementMake(type,description,value){
 const time = getFormatedDateTime();
 const newItemHtml = `<div class="item">
@@ -46,6 +65,7 @@ const newItemHtml = `<div class="item">
 </div>
 </div>`;
 document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
+addItemsToLS(time,type,description,value);
 }
 
 /*reset the typed item of add bar in form strt*/
