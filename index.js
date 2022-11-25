@@ -1,13 +1,8 @@
 document.querySelector('#ewallet-form').addEventListener('submit',(e)=>{
 e.preventDefault();
-console.log('hello');
-
 const type = document.querySelector(".add__type").value;
 const description = document.querySelector(".add__description").value;
 const amount = document.querySelector(".add__value").value;
-
-console.log(type,description,amount);
-console.log(description.length,amount.lenght);
 if(description && amount){
     newElementMake(type,description,amount);
     resetForm();
@@ -31,12 +26,7 @@ function getFormatedDateTime(){
 /*check and return any data is on Browser Local Storage strt*/
 function getItemsFromLS(){
     let items = localStorage.getItem('item');
-    if(items){
-    items = JSON.parse(items);
-    }else{
-    items = [];
-    } 
- return items;
+    return items ? JSON.parse(items) : [];
 }
 /*check and return any data is on Browser Local Storage end*/
 
@@ -64,7 +54,7 @@ function showItemsFromLs(){
         </div>
         </div>
         <div class="item-amount ${item.type === '+' ? "income-amount":"expense-amount"}">
-        <p>${item.type}$${item.value}</p>
+        <p>${item.type}$${toSeparetorFun(item.value)}</p>
         </div>
         </div>`;
         document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
@@ -76,26 +66,16 @@ function showItemsFromLs(){
 showTotalIncome();
 function showTotalIncome(){
     let items = getItemsFromLS();
-    let totalIncome = 0;
-    for(let item of items){
-        if(item.type === "+")
-        totalIncome += parseInt(item.value);
-    }
-    document.querySelector('.income__amount p').innerText = `$${totalIncome}` ;
-    console.log(document.querySelector('.expense__amount p').children);
+    let totalIncome = items.filter(item => item.type === "+").reduce((income,item) => income + parseInt(item.value),0);
+    document.querySelector('.income__amount p').innerText = `$${toSeparetorFun(totalIncome)}` ;
 }
 /*total income count end*/
 /*total expense count strt*/
 showTotalExpenses();
 function showTotalExpenses(){
     let items = getItemsFromLS();
-    let totalExpense = 0;
-    for(let item of items){
-        if(item.type === "-")
-        totalExpense += parseInt(item.value);
-    }
-    document.querySelector('.expense__amount p').innerText = `$${totalExpense}`;
-    console.log(totalExpense);
+    let totalExpense = items.filter(item => item.type === "-").reduce((income,item) => income + parseInt(item.value),0);
+    document.querySelector('.expense__amount p').innerText = `$${toSeparetorFun(totalExpense)}`;
 }
 /*total expense count end*/
 
@@ -108,16 +88,19 @@ function totalBalance(){
         if(item.type === "+")
         totalBal += parseInt(item.value);
         else
-        totalBal -= parseInt(item.value);
+        totalBal -= parseInt(item.value);   
     }
-    document.querySelector('.balance__amount p').innerText = `$${totalBal}`;
-    if(totalBal >= 0){
-        document.querySelector('header').className= "green";
-    }else{
-        document.querySelector('header').className= "red";
-    }
+    document.querySelector('.balance__amount p').innerText = `$${toSeparetorFun(totalBal)}`;
+    totalBal >= 0 ?  document.querySelector('header').className= "green": document.querySelector('header').className= "red";
 }
 /*total balance calculate and background end*/
+
+/*comma separated number str*/
+function toSeparetorFun(val){
+    const value = parseInt(val);
+    return value.toLocaleString();
+}
+/*comma separated number end*/
 
 function newElementMake(type,description,value){
 const time = getFormatedDateTime();
@@ -131,7 +114,7 @@ const newItemHtml = `<div class="item">
     </div>
 </div>
 <div class="item-amount ${type === '+' ? "income-amount":"expense-amount"}">
-    <p>${type}$${value}</p>
+    <p>${type}$${toSeparetorFun(value)}</p>
 </div>
 </div>`;
 document.querySelector('.collection').insertAdjacentHTML('afterbegin',newItemHtml);
